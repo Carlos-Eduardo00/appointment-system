@@ -1,23 +1,22 @@
-import cors from 'cors';
 import dotenv from 'dotenv';
-import express from 'express';
+import { createApp } from './app.js';
+import { connectDatabase } from './config/database.js';
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 3000;
+const app = createApp();
 
-app.use(cors());
-app.use(express.json());
+async function startServer() {
+  try {
+    await connectDatabase();
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Falha ao iniciar o servidor:', error.message);
+    process.exit(1);
+  }
+}
 
-app.get('/health', (_req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'API em execução',
-    data: null,
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+startServer();
