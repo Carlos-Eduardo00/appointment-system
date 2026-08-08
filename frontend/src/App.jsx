@@ -16,8 +16,12 @@ function App() {
                   Agendamentos
                 </Link>
                 <nav className="header-nav">
-                  <Link to="/agendamento">Agendar</Link>
-                  <Link to="/admin">Admin</Link>
+                  <Link to="/agendamento" className="header-nav-btn">
+                    Agendar
+                  </Link>
+                  <Link to="/admin" className="header-nav-btn">
+                    Admin
+                  </Link>
                 </nav>
               </div>
             </header>

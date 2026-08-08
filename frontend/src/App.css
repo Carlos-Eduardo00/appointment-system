@@ -61,12 +61,36 @@ select {
   font-weight: 700;
 }
 
-.header-nav a {
-  color: #e5e7eb;
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.header-nav a:hover {
+.header-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.header-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
   color: #ffffff;
+}
+
+.header-nav-btn:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
 }
 
 .app-main {
