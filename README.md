@@ -87,7 +87,7 @@ aplicacao-de-agendamento/
 
 ## Pré-requisitos
 
-- Node.js 18+
+- Node.js 18
 - npm
 - MongoDB Atlas (ou instância local)
 
