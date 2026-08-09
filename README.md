@@ -41,7 +41,7 @@ Sistema genérico de gerenciamento de agendamentos com área do cliente e área 
 
 ## Credenciais de acesso do Login do Adm
 
-- Login: testeamd@gmail.com
+- Login: testeadm@gmail.com
 - Senha: 180180360
 
 ## Estrutura
