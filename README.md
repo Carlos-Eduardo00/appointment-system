@@ -5,7 +5,7 @@ Sistema de gerenciamento de agendamentos com área do cliente e área administra
 ## Decisões técnicas
 
 - A arquitetura do projeto foi estruturada como um monorepo, com o objetivo de centralizar e facilitar o desenvolvimento e a organização da aplicação. No frontend, utilizei Vite + React por já possuir familiaridade com essas tecnologias. No backend, utilizei Node.js + Express. Para persistência dos dados, utilizei MongoDB + Mongoose, JWT para autenticação administrativa, Zod para validação e Context API + React Hooks para gerenciamento de estado.
-- As decisões técnicas e arquiteturais estão detalhadas nos arquivos PROJECT_ARCHITECTURE.md e IMPLEMENTATION_DECISIONS.md. Esses arquivos foram feitos para adotar como método de planejamento do projeto e para entrgar mais contexto para a IA poder orientar com mais eficiência no decorrer do projeto.
+- As decisões técnicas e arquiteturais estão detalhadas nos arquivos PROJECT_ARCHITECTURE.md e IMPLEMENTATION_DECISIONS.md. Esses arquivos foram feitos para adotar como método de planejamento do projeto e para entregar mais contexto para a IA poder orientar com mais eficiência no decorrer do projeto.
 
 
 ## Print das Telas do Projeto
