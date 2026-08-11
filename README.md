@@ -1,6 +1,6 @@
 # Aplicação de Agendamentos
 
-Sistema genérico de gerenciamento de agendamentos com área do cliente e área administrativa.
+Sistema de gerenciamento de agendamentos com área do cliente e área administrativa.
 
 ## Decisões técnicas
 
