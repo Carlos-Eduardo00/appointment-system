@@ -5,41 +5,98 @@ import Button from '../components/Button.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import Input from '../components/Input.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import Select from '../components/Select.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import {
   deleteAppointment,
   listAppointments,
   updateAppointmentStatus,
 } from '../services/appointmentService.js';
+import { formatPhoneInput } from '../utils/phone.js';
+
+const FILTER_FIELDS = {
+  name: {
+    label: 'Nome',
+    inputType: 'text',
+    placeholder: 'Ex.: Rodrigo',
+  },
+  phone: {
+    label: 'Telefone',
+    inputType: 'tel',
+    placeholder: 'Ex.: (11) 99999-9999',
+  },
+  date: {
+    label: 'Data',
+    inputType: 'date',
+    placeholder: '',
+  },
+  time: {
+    label: 'Horário',
+    inputType: 'time',
+    placeholder: '',
+  },
+};
+
+function filterByTime(appointments, timeValue) {
+  if (!timeValue) {
+    return appointments;
+  }
+
+  return appointments.filter((appointment) => appointment.time.startsWith(timeValue));
+}
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const { token, username, logout } = useAuth();
   const [appointments, setAppointments] = useState([]);
-  const [dateFilter, setDateFilter] = useState('');
+  const [filterType, setFilterType] = useState('name');
+  const [filterValue, setFilterValue] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionError, setActionError] = useState('');
   const [actionLoadingId, setActionLoadingId] = useState('');
+
+  const activeFilter = FILTER_FIELDS[filterType];
 
   const loadAppointments = useCallback(async () => {
     setLoading(true);
     setError('');
 
     try {
-      const response = await listAppointments(token, {
-        date: dateFilter || undefined,
+      const apiFilters = {
         sortBy: 'date',
         sortOrder: 'desc',
-      });
-      setAppointments(response.data.appointments);
+      };
+
+      if (filterValue) {
+        if (filterType === 'name') {
+          apiFilters.name = filterValue.trim();
+        }
+
+        if (filterType === 'phone') {
+          apiFilters.phone = filterValue;
+        }
+
+        if (filterType === 'date') {
+          apiFilters.date = filterValue;
+        }
+      }
+
+      const response = await listAppointments(token, apiFilters);
+      let items = response.data.appointments;
+
+      if (filterType === 'time' && filterValue) {
+        items = filterByTime(items, filterValue);
+      }
+
+      setAppointments(items);
     } catch (requestError) {
       setAppointments([]);
       setError(requestError.message);
     } finally {
       setLoading(false);
     }
-  }, [token, dateFilter]);
+  }, [token, filterType, filterValue]);
 
   useEffect(() => {
     loadAppointments();
@@ -50,8 +107,24 @@ export default function AdminDashboard() {
     navigate('/admin');
   }
 
-  function handleClearFilter() {
-    setDateFilter('');
+  function handleFilterTypeChange(event) {
+    setFilterType(event.target.value);
+    setFilterValue('');
+  }
+
+  function handleFilterValueChange(event) {
+    const { value } = event.target;
+
+    if (filterType === 'phone') {
+      setFilterValue(formatPhoneInput(value));
+      return;
+    }
+
+    setFilterValue(value);
+  }
+
+  function handleClearFilters() {
+    setFilterValue('');
   }
 
   async function handleStatusChange(id, status) {
@@ -103,16 +176,31 @@ export default function AdminDashboard() {
       </div>
 
       <div className="admin-filters card">
+        <Select
+          id="filterType"
+          label="Filtro"
+          value={filterType}
+          onChange={handleFilterTypeChange}
+        >
+          <option value="name">Nome</option>
+          <option value="phone">Telefone</option>
+          <option value="date">Data</option>
+          <option value="time">Horário</option>
+        </Select>
+
         <Input
-          id="dateFilter"
-          label="Filtrar por data"
-          type="date"
-          value={dateFilter}
-          onChange={(event) => setDateFilter(event.target.value)}
+          id="filterValue"
+          label={activeFilter.label}
+          type={activeFilter.inputType}
+          value={filterValue}
+          placeholder={activeFilter.placeholder}
+          step={filterType === 'time' ? 1800 : undefined}
+          onChange={handleFilterValueChange}
         />
-        {dateFilter && (
-          <Button type="button" variant="secondary" onClick={handleClearFilter}>
-            Limpar filtro
+
+        {filterValue && (
+          <Button type="button" variant="secondary" onClick={handleClearFilters}>
+            Limpar Filtros
           </Button>
         )}
       </div>

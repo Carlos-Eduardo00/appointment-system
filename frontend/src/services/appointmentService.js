@@ -19,6 +19,14 @@ export function listAppointments(token, filters = {}) {
     params.set('date', filters.date);
   }
 
+  if (filters.name) {
+    params.set('name', filters.name);
+  }
+
+  if (filters.phone) {
+    params.set('phone', filters.phone);
+  }
+
   if (filters.sortBy) {
     params.set('sortBy', filters.sortBy);
   }
